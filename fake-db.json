@@ -1,0 +1,30 @@
+{
+  "plans": [
+    {
+      "id": 1,
+      "name": "Basic Plan",
+      "price": 490000,
+      "features": ["Feature 1", "Feature 2"]
+    },
+    {
+      "id": 2,
+      "name": "Pro Plan",
+      "price": 890000,
+      "features": ["Feature 1", "Feature 2", "Feature 3"]
+    },
+    {
+      "id": 3,
+      "name": "Enterprise Plan",
+      "price": 1350000,
+      "features": ["Feature 1", "Feature 2", "Feature 3"]
+    }
+  ],
+  "users": [
+    { "id": 1, "name": "John Doe", "email": "john@example.com" },
+    { "id": 2, "name": "Jane Doe", "email": "jane@example.com" }
+  ],
+  "transactions": [
+    { "id": 1, "user": "John Doe", "amount": 99, "status": "pending" },
+    { "id": 2, "user": "Jane Doe", "amount": 199, "status": "approved" }
+  ]
+}
