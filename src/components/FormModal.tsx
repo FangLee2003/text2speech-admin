@@ -1,17 +1,30 @@
 import React, { useState, useEffect } from "react";
 import Button from "@/components/Button";
 
-interface FormModalProps {
+interface FieldConfig<T> {
+  name: keyof T;
+  type: string;
+  placeholder: string;
+}
+
+interface FormModalProps<T> {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: any) => void;
-  selectedItem: any | null;
-  fields: Array<{ name: string, type: string, placeholder: string }>;
+  onSave: (data: T) => void;
+  selectedItem: T | null;
+  fields: Array<FieldConfig<T>>;
   title: string;
 }
 
-const FormModal = ({ isOpen, onClose, onSave, selectedItem, fields, title }: FormModalProps) => {
-  const [formData, setFormData] = useState<any>({});
+const FormModal = <T extends Record<string, unknown>>({
+  isOpen,
+  onClose,
+  onSave,
+  selectedItem,
+  fields,
+  title,
+}: FormModalProps<T>) => {
+  const [formData, setFormData] = useState<Partial<T>>({});
 
   useEffect(() => {
     if (selectedItem) {
@@ -22,15 +35,16 @@ const FormModal = ({ isOpen, onClose, onSave, selectedItem, fields, title }: For
   }, [selectedItem]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    onSave(formData as T);
   };
 
   if (!isOpen) return null;
@@ -42,18 +56,18 @@ const FormModal = ({ isOpen, onClose, onSave, selectedItem, fields, title }: For
           onClick={onClose}
           className="absolute top-1 right-4 text-gray-500 text-3xl hover:text-gray-800 cursor-pointer"
         >
-          <span className="material-icons">x</span>
+          ✖
         </button>
 
         <h3 className="text-xl font-semibold mb-4 text-center">{title}</h3>
 
         <form onSubmit={handleSubmit}>
           {fields.map((field) => (
-            <div className="mb-4" key={field.name}>
+            <div className="mb-4" key={String(field.name)}>
               <input
                 type={field.type}
-                name={field.name}
-                value={formData[field.name] || ""}
+                name={String(field.name)}
+                value={formData[field.name] as string || ""}
                 placeholder={field.placeholder}
                 className="w-full p-3 border border-gray-300 rounded-md"
                 onChange={handleChange}

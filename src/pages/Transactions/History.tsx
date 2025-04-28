@@ -4,7 +4,7 @@ import Table from "@/components/Table";
 import { Transaction } from "@/types/Transaction"; // Import Transaction interface
 
 const TransactionHistory = () => {
-  const [transactions, setTransactions] = useState<any[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
