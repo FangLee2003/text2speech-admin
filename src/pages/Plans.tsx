@@ -59,12 +59,12 @@ const Plans = () => {
           {
             label: "Edit",
             color: "bg-emerald-400 text-white hover:bg-emerald-500",
-            onAction: handleEditPlan,
+            onAction: handleEditPlan, // ✅ handleEditPlan nhận Plan rồi, không cần chỉnh
           },
           {
             label: "Delete",
             color: "bg-rose-600 text-white hover:bg-rose-700",
-            onAction: handleDeletePlan,
+            onAction: (plan) => handleDeletePlan(plan.id), // 👈 Bắt buộc sửa: truyền ID từ Plan
           },
         ]}
       />

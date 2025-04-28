@@ -3,7 +3,6 @@ import PrivateRoute from "./PrivateRoute";
 import Dashboard from "@/pages/Dashboard";
 import Plans from "@/pages/Plans";
 import Users from "@/pages/Users";
-import TransactionsIndex from "@/pages/Transactions/Index";  // Trang chính của Transactions
 import PendingTransactions from "@/pages/Transactions/Pending";  // Trang Pending
 import TransactionHistory from "@/pages/Transactions/History";  // Trang History
 import Login from "@/pages/Auth/Login";

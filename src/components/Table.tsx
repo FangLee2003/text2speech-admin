@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
-interface TableProps<T> {
+interface TableProps<T extends object> {  // 👈 T extends object
   headers: string[];
   data: T[];
-  actions: { label: string; color: string, onAction: (item: T) => void; }[];  // Thêm color vào action
+  actions: { label: string; color: string; onAction: (item: T) => void }[];
 }
 
-const Table = <T,>({ headers, data, actions }: TableProps<T>) => {
+const Table = <T extends object>({ headers, data, actions }: TableProps<T>) => {
   return (
     <table className="min-w-full mt-4">
       <thead>
@@ -21,22 +21,22 @@ const Table = <T,>({ headers, data, actions }: TableProps<T>) => {
       <tbody>
         {data.map((item, idx) => (
           <tr key={idx}>
-            {Object.values(item).map((value, idx) => (
-              <td key={idx} className="border px-4 py-2">{String(value)}</td>
+            {(Object.values(item) as Array<string | number | boolean | null | undefined>).map((value, valueIdx) => (
+              <td key={valueIdx} className="border px-4 py-2">{String(value)}</td>
             ))}
-            {actions.length > 0 &&
+            {actions.length > 0 && (
               <td className="px-4 py-2 border">
-                {actions.map((action, index) => (
+                {actions.map((action, actionIdx) => (
                   <button
-                    key={index}
-                    onClick={() => action.onAction(row)}
+                    key={actionIdx}
+                    onClick={() => action.onAction(item)}
                     className={`px-4 py-2 rounded-sm mr-2 ${action.color}`}
                   >
                     {action.label}
                   </button>
                 ))}
               </td>
-            }
+            )}
           </tr>
         ))}
       </tbody>

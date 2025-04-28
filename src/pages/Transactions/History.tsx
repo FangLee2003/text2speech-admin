@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getTransactions } from "@/services/api";
 import Table from "@/components/Table";
+import { Transaction } from "@/types/Transaction"; // Import Transaction interface
 
 const TransactionHistory = () => {
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -8,7 +9,7 @@ const TransactionHistory = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       const transactionsData = await getTransactions();
-      const completedTransactions = transactionsData.filter(t => t.status !== "pending");
+      const completedTransactions = transactionsData.filter((t: Transaction) => t.status !== "pending");
       setTransactions(completedTransactions);
     };
     fetchTransactions();

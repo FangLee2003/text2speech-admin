@@ -9,7 +9,7 @@ const PendingTransactions = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       const transactionsData = await getTransactions();
-      const pendingTransactions = transactionsData.filter(t => t.status === "pending");
+      const pendingTransactions = transactionsData.filter((t: Transaction) => t.status === "pending");
       setTransactions(pendingTransactions);
     };
     fetchTransactions();
@@ -34,8 +34,8 @@ const PendingTransactions = () => {
         headers={['User', 'Amount', 'Status']}
         data={transactions}
         actions={[
-          { label: "Accept", color: "bg-emerald-400 text-white hover:bg-emerald-500", onAction: handleAccept },
-          { label: "Reject", color: "bg-rose-600 text-white hover:bg-rose-700", onAction: handleReject }
+          { label: "Accept", color: "bg-emerald-400 text-white hover:bg-emerald-500", onAction: (transaction) => handleAccept(transaction.id), },
+          { label: "Reject", color: "bg-rose-600 text-white hover:bg-rose-700", onAction: (transaction) => handleReject(transaction.id), }
         ]}
       />
     </div>

@@ -3,7 +3,7 @@ import { getUsers } from "@/services/api";
 import Button from "@/components/Button";
 import FormModal from "@/components/FormModal";
 import Table from "@/components/Table";
-import { User } from "@/types/User";
+import { User } from "@/types/User"; // Đảm bảo rằng User có cấu trúc đúng
 
 const Users = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,7 +52,7 @@ const Users = () => {
       <h2 className="text-2xl font-bold mb-6">Users</h2>
       <Button onClick={handleAddUser}>Add User</Button>
 
-      <Table<User>
+      <Table<User>  // Đảm bảo Table nhận đúng kiểu User
         headers={["Name", "Email"]}
         data={users}
         actions={[
@@ -64,7 +64,7 @@ const Users = () => {
           {
             label: "Delete",
             color: "bg-rose-600 text-white hover:bg-rose-700",
-            onAction: handleDeleteUser,
+            onAction: (user) => handleDeleteUser(user.id),
           },
         ]}
       />
