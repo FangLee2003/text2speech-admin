@@ -1,50 +1,65 @@
 import React, { useState, useEffect } from "react";
-import { getPlans } from "@/services/api";
+import { getPlans, createPlan, updatePlan } from "@/services/api";
 import Button from "@/components/Button";
 import FormModal from "@/components/FormModal";
 import Table from "@/components/Table";
 import { Plan } from "@/types/Plan";
+import ConfirmModal from "@/components/ConfirmModal";
 
 const Plans = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+
   const [plans, setPlans] = useState<Plan[]>([]);
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
 
+  const fetchPlans = async () => {
+    const plansData = await getPlans();
+    setPlans(plansData);
+  };
+
   useEffect(() => {
-    const fetchPlans = async () => {
-      const plansData = await getPlans();
-      setPlans(plansData);
-    };
     fetchPlans();
   }, []);
 
   const handleAddPlan = () => {
-    setSelectedPlan(null); // Reset selected plan for adding new one
-    setIsModalOpen(true);
+    setSelectedPlan(null);
+    setEditModalOpen(true);
   };
 
-  const handleSavePlan = (newPlan: { name: string; price: number; features: string[] }) => {
-    if (selectedPlan) {
-      // Edit existing plan
-      setPlans((prev) =>
-        prev.map((plan) =>
-          plan.id === selectedPlan.id ? { ...newPlan, id: selectedPlan.id } : plan
-        )
-      );
-    } else {
-      // Add new plan
-      setPlans([...plans, { ...newPlan, id: plans.length + 1 }]);
-    }
-    setIsModalOpen(false);
-  };
 
   const handleEditPlan = (plan: Plan) => {
     setSelectedPlan(plan);
-    setIsModalOpen(true);
+    setEditModalOpen(true);
   };
 
+  const handleSavePlan = async (form: {
+    name: string;
+    credit: number;
+    hour: string;
+    price: number;
+  }) => {
+    try {
+      if (selectedPlan) {
+        // Gọi PUT API
+        await updatePlan({ ...selectedPlan, ...form });
+      } else {
+        // Gọi POST API
+        await createPlan(form);
+      }
+      fetchPlans();
+    } catch (error) {
+      console.error("Lỗi khi lưu Plan:", error);
+    } finally {
+      setEditModalOpen(false);
+    }
+  };
+  const handleConfirmDelete = (plan: Plan) => {
+    setSelectedPlan(plan)
+    setConfirmModalOpen(true);
+  };
   const handleDeletePlan = (id: number) => {
-    setPlans(plans.filter((plan) => plan.id !== id));
+    setPlans(plans.filter((plan) => plan.id !== id)); // TODO: gọi DELETE nếu backend hỗ trợ
   };
 
   return (
@@ -53,33 +68,45 @@ const Plans = () => {
       <Button onClick={handleAddPlan}>Add Plan</Button>
 
       <Table<Plan>
-        headers={["Name", "Price", "Features"]}
+        headers={["Name", "Credit", "Hour", "Price", "Status", "Created Date", "Updated Date"]}
         data={plans}
         actions={[
           {
             label: "Edit",
             color: "bg-emerald-400 text-white hover:bg-emerald-500",
-            onAction: handleEditPlan, // ✅ handleEditPlan nhận Plan rồi, không cần chỉnh
+            onAction: handleEditPlan,
           },
           {
             label: "Delete",
             color: "bg-rose-600 text-white hover:bg-rose-700",
-            onAction: (plan) => handleDeletePlan(plan.id), // 👈 Bắt buộc sửa: truyền ID từ Plan
+            onAction: (plan) => handleConfirmDelete(plan),
           },
         ]}
       />
 
-      <FormModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+      <FormModal<Plan>
+        isOpen={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
         onSave={handleSavePlan}
         selectedItem={selectedPlan}
         fields={[
-          { name: "name", type: "text", placeholder: "Plan Name" },
-          { name: "price", type: "number", placeholder: "Plan Price" },
-          { name: "features", type: "text", placeholder: "Plan Features" },
+          { name: "name", type: "text", placeholder: "Tên gói" },
+          { name: "credit", type: "number", placeholder: "Số credit" },
+          { name: "hour", type: "text", placeholder: "Giờ sử dụng" },
+          { name: "price", type: "number", placeholder: "Giá tiền" },
         ]}
-        title={selectedPlan ? "Edit Plan" : "Add New Plan"}
+        title={selectedPlan ? "Chỉnh sửa gói" : "Tạo gói mới"}
+      />
+
+      <ConfirmModal
+        isOpen={confirmModalOpen}
+        title="Xác nhận xóa"
+        message={`Bạn có chắc chắn muốn xóa gói "${selectedPlan?.name}" không?`}
+        onConfirm={() => {
+          handleDeletePlan(selectedPlan?.id || 0);
+          setConfirmModalOpen(false);
+        }}
+        onCancel={() => setConfirmModalOpen(false)}
       />
     </div>
   );

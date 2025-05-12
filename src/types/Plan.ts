@@ -1,7 +1,11 @@
+// src/types/Plan.ts
 export interface Plan {
-    id: number;
-    name: string;
-    price: number;
-    features: string[];
-  }
-  
+  id: number;
+  name: string;
+  credit: number;
+  hour: string;
+  price: number;
+  status: string;
+  createdDate: number[];
+  updatedDate: number[];
+}
