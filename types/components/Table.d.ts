@@ -1,11 +1,13 @@
-interface TableProps<T extends object> {
+import React from "react";
+interface TableProps<T> {
     headers: string[];
     data: T[];
-    actions: {
+    actions?: {
         label: string;
         color: string;
         onAction: (item: T) => void;
     }[];
+    renderRow?: (item: T) => React.ReactNode[];
 }
-declare const Table: <T extends object>({ headers, data, actions }: TableProps<T>) => import("react/jsx-runtime").JSX.Element;
+declare const Table: <T extends Record<string, any>>({ headers, data, actions, renderRow }: TableProps<T>) => import("react/jsx-runtime").JSX.Element;
 export default Table;

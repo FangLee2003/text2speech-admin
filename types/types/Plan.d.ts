@@ -1,6 +1,10 @@
 export interface Plan {
     id: number;
     name: string;
+    credit: number;
+    hour: string;
     price: number;
-    features: string[];
+    status: string;
+    createdDate: number[];
+    updatedDate: number[];
 }
