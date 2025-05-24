@@ -52,7 +52,7 @@ const Plans = () => {
           month: form.month || "",
           description: form.description || "",
           days: form.days || 0,
-        };
+        }; 
         const created = await createPlan(newPlan);
         setPlans((prev) => [...prev, created]);
       }
