@@ -6,6 +6,9 @@ export interface Plan {
   hour: string;
   price: number;
   status: string;
-  createdDate: number[];
-  updatedDate: number[];
+  month?: string;
+  description?: string;
+  days?: number;
+  createdDate?: string;
+  updatedDate?: string;
 }

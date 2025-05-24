@@ -3,8 +3,7 @@ import PrivateRoute from "./PrivateRoute";
 import Dashboard from "@/pages/Dashboard";
 import Plans from "@/pages/Plans";
 import Users from "@/pages/Users";
-import PendingTransactions from "@/pages/Transactions/Pending";  // Trang Pending
-import TransactionHistory from "@/pages/Transactions/History";  // Trang History
+import Orders from "@/pages/Orders";
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
 import ForgotPassword from "@/pages/Auth/ForgotPassword";
@@ -29,10 +28,7 @@ const AppRoutes = () => (
         <Route index element={<Dashboard />} />
         <Route path="plans" element={<Plans />} />
         <Route path="users" element={<Users />} />
-        <Route path="transactions">
-          <Route path="pending" element={<PendingTransactions />} />
-          <Route path="history" element={<TransactionHistory />} />
-        </Route>
+        <Route path="orders" element={<Orders />} />
       </Route>
     </Routes>
   </BrowserRouter>

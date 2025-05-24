@@ -4,8 +4,7 @@ import {
   createPlan,
   updatePlan,
   // deletePlan
-}
-  from "../services/api";
+} from "../services/api";
 import Button from "../components/Button";
 import FormModal from "../components/FormModal";
 import Table from "../components/Table";
@@ -43,12 +42,16 @@ const Plans = () => {
           prev.map((p) => (p.id === updated.id ? updated : p))
         );
       } else {
+        // Gán trường status mặc định nếu chưa có
         const newPlan: Omit<Plan, "id" | "createdDate" | "updatedDate"> = {
           name: form.name || "",
           credit: form.credit || 0,
           hour: form.hour || "0",
           price: form.price || 0,
           status: form.status || "ACTIVE",
+          month: form.month || "",
+          description: form.description || "",
+          days: form.days || 0,
         };
         const created = await createPlan(newPlan);
         setPlans((prev) => [...prev, created]);
@@ -64,19 +67,10 @@ const Plans = () => {
     setIsModalOpen(true);
   };
 
-  // const handleDelete = async (plan: Plan) => {
-  //   try {
-  //     await deletePlan(plan.id);
-  //     setPlans((prev) => prev.filter((p) => p.id !== plan.id));
-  //   } catch (err) {
-  //     console.error("Lỗi khi xóa kế hoạch:", err);
-  //   }
-  // };
-
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Danh sách kế hoạch</h2>
-      <Button onClick={handleAdd}>Thêm kế hoạch</Button>
+      <h2 className="text-2xl font-bold mb-6">Danh sách plans</h2>
+      <Button onClick={handleAdd}>Thêm plans</Button>
 
       <Table<Plan>
         headers={["Tên", "Credit", "Giờ", "Giá", "Trạng thái"]}

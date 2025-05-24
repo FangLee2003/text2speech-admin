@@ -15,7 +15,7 @@ const Dashboard = () => {
           <p className="text-blue-600">120</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-md">
-          <h3 className="font-semibold">Total Transactions</h3>
+          <h3 className="font-semibold">Total Orders</h3>
           <p className="text-blue-600">30</p>
         </div>
       </div>

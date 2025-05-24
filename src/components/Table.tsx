@@ -7,11 +7,17 @@ interface TableProps<T> {
     label: string;
     color: string;
     onAction: (item: T) => void;
+    visible?: (item: T) => boolean; // Thêm thuộc tính visible
   }[];
   renderRow?: (item: T) => React.ReactNode[]; // Thêm renderRow tùy chọn
 }
 
-const Table = <T extends Record<string, any>>({ headers, data, actions = [], renderRow }: TableProps<T>) => {
+const Table = <T extends Record<string, any>>({
+  headers,
+  data,
+  actions = [],
+  renderRow,
+}: TableProps<T>) => {
   return (
     <table className="min-w-full mt-4 border-collapse border border-gray-300">
       <thead>
@@ -29,30 +35,39 @@ const Table = <T extends Record<string, any>>({ headers, data, actions = [], ren
       </thead>
       <tbody>
         {data.map((item, idx) => (
-          <tr
-            key={idx}
-            className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}
-          >
+          <tr key={idx} className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}>
             <td className="border px-4 py-2">{idx + 1}</td>
-            {/* Nếu renderRow được truyền thì dùng nó, ngược lại dùng Object.values */}
             {renderRow
-              ? renderRow(item)
+              ? renderRow(item).map((cell, cellIdx) => (
+                  <td
+                    key={cellIdx}
+                    className="border px-4 py-2 whitespace-nowrap"
+                  >
+                    {cell}
+                  </td>
+                ))
               : Object.values(item).map((value, idx) => (
-                <td key={idx} className="border px-4 py-2 whitespace-nowrap">
-                  {String(value)}
-                </td>
-              ))}
+                  <td
+                    key={idx}
+                    className="border px-4 py-2 whitespace-nowrap"
+                  >
+                    {String(value)}
+                  </td>
+                ))}
             {actions.length > 0 && (
               <td className="border px-4 py-2">
-                {actions.map((action, i) => (
-                  <button
-                    key={i}
-                    onClick={() => action.onAction(item)}
-                    className={`mr-2 px-3 py-1 rounded text-white ${action.color}`}
-                  >
-                    {action.label}
-                  </button>
-                ))}
+                {actions.map(
+                  (action, i) =>
+                    (!action.visible || action.visible(item)) && (
+                      <button
+                        key={i}
+                        onClick={() => action.onAction(item)}
+                        className={`mr-2 px-3 py-1 rounded text-white ${action.color}`}
+                      >
+                        {action.label}
+                      </button>
+                    )
+                )}
               </td>
             )}
           </tr>

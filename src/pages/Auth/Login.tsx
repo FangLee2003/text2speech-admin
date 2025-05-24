@@ -31,7 +31,8 @@ const Login = () => {
 
     try {
       const response = await loginAPI(formData.username, formData.password);
-      const token = response?.data?.token;
+      const token = response?.data?.data?.token;
+      
       if (token) {
         login(token);
         navigate("/");

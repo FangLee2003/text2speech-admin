@@ -23,7 +23,7 @@
     { "id": 1, "name": "John Doe", "email": "john@example.com" },
     { "id": 2, "name": "Jane Doe", "email": "jane@example.com" }
   ],
-  "transactions": [
+  "orders": [
     { "id": 1, "user": "John Doe", "amount": 99, "status": "pending" },
     { "id": 2, "user": "Jane Doe", "amount": 199, "status": "approved" }
   ]

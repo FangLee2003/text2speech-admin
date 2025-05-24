@@ -1,10 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Sidebar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+
+  const { logout } = useAuth();
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <div className="h-full p-4 bg-gray-50">
@@ -40,13 +49,13 @@ const Sidebar = () => {
             onClick={toggleDropdown}
             className="block w-full py-2 px-4 text-left hover:bg-blue-100 rounded-md cursor-pointer"
           >
-            Transactions
+            Orders
           </button>
           {isDropdownOpen && (
             <ul className="pl-4 mt-2 space-y-2">
               <li>
                 <Link
-                  to="/transactions/pending"
+                  to="/orders/pending"
                   className="block py-2 px-4 hover:bg-blue-100 rounded-md"
                 >
                   Pending
@@ -54,14 +63,23 @@ const Sidebar = () => {
               </li>
               <li>
                 <Link
-                  to="/transactions/history"
+                  to="/orders/history"
                   className="block py-2 px-4 hover:bg-blue-100 rounded-md"
                 >
                   History
                 </Link>
               </li>
+
             </ul>
           )}
+        </li>
+        <li>
+          <button
+            onClick={handleLogout}
+            className="block w-full py-2 px-4 text-left text-white bg-rose-600 hover:bg-rose-500 rounded-md cursor-pointer"
+          >
+            Log out
+          </button>
         </li>
       </ul>
     </div>

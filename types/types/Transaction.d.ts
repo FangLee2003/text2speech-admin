@@ -1,4 +1,4 @@
-export interface Transaction {
+export interface Order {
     id: number;
     user: string;
     plans: string;
