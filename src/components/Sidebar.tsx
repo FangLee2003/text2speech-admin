@@ -45,33 +45,12 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <button
-            onClick={toggleDropdown}
-            className="block w-full py-2 px-4 text-left hover:bg-blue-100 rounded-md cursor-pointer"
+          <Link
+            to="/orders"
+            className="block py-2 px-4 hover:bg-blue-100 rounded-md"
           >
             Orders
-          </button>
-          {isDropdownOpen && (
-            <ul className="pl-4 mt-2 space-y-2">
-              <li>
-                <Link
-                  to="/orders/pending"
-                  className="block py-2 px-4 hover:bg-blue-100 rounded-md"
-                >
-                  Pending
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/orders/history"
-                  className="block py-2 px-4 hover:bg-blue-100 rounded-md"
-                >
-                  History
-                </Link>
-              </li>
-
-            </ul>
-          )}
+          </Link>
         </li>
         <li>
           <button
